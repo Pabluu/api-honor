@@ -3,8 +3,8 @@ CREATE TABLE "USUARIO" (
     "id" TEXT NOT NULL,
     "nome" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "permissao" TEXT NOT NULL,
-    "empresa_id" TEXT NOT NULL,
 
     CONSTRAINT "USUARIO_pkey" PRIMARY KEY ("id")
 );
@@ -15,10 +15,7 @@ CREATE TABLE "EMPRESA" (
     "cnpj_cpf" TEXT NOT NULL,
     "nome" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
     "telefone" TEXT,
-    "endereco_id" TEXT NOT NULL,
-    "responsavel_id" TEXT NOT NULL,
 
     CONSTRAINT "EMPRESA_pkey" PRIMARY KEY ("id")
 );
@@ -31,8 +28,6 @@ CREATE TABLE "CLIENTE" (
     "telefone" TEXT,
     "ativo" BOOLEAN NOT NULL DEFAULT true,
     "tipo" TEXT NOT NULL,
-    "empresa_id" TEXT NOT NULL,
-    "endereco_id" TEXT NOT NULL,
 
     CONSTRAINT "CLIENTE_pkey" PRIMARY KEY ("id")
 );
@@ -42,10 +37,8 @@ CREATE TABLE "RECIBO" (
     "id" TEXT NOT NULL,
     "numero" SERIAL NOT NULL,
     "valor" DECIMAL(65,30) NOT NULL DEFAULT 0,
-    "data_competencia" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "data_competencia" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "data_pagamento" TIMESTAMP(3),
-    "cliente_id" TEXT NOT NULL,
-    "responsavel_id" TEXT NOT NULL,
 
     CONSTRAINT "RECIBO_pkey" PRIMARY KEY ("id")
 );
@@ -95,24 +88,3 @@ CREATE UNIQUE INDEX "ENDERECO_cep_key" ON "ENDERECO"("cep");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Responsavel_identificador_key" ON "Responsavel"("identificador");
-
--- AddForeignKey
-ALTER TABLE "USUARIO" ADD CONSTRAINT "USUARIO_empresa_id_fkey" FOREIGN KEY ("empresa_id") REFERENCES "EMPRESA"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "EMPRESA" ADD CONSTRAINT "EMPRESA_endereco_id_fkey" FOREIGN KEY ("endereco_id") REFERENCES "ENDERECO"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "EMPRESA" ADD CONSTRAINT "EMPRESA_responsavel_id_fkey" FOREIGN KEY ("responsavel_id") REFERENCES "Responsavel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "CLIENTE" ADD CONSTRAINT "CLIENTE_empresa_id_fkey" FOREIGN KEY ("empresa_id") REFERENCES "EMPRESA"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "CLIENTE" ADD CONSTRAINT "CLIENTE_endereco_id_fkey" FOREIGN KEY ("endereco_id") REFERENCES "ENDERECO"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "RECIBO" ADD CONSTRAINT "RECIBO_cliente_id_fkey" FOREIGN KEY ("cliente_id") REFERENCES "CLIENTE"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "RECIBO" ADD CONSTRAINT "RECIBO_responsavel_id_fkey" FOREIGN KEY ("responsavel_id") REFERENCES "Responsavel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

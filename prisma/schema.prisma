@@ -14,6 +14,7 @@ model Usuario {
   id        String @id @default(uuid())
   nome      String
   email     String @unique
+  password  String
   permissao String
 
   // RELACIONAMENTO(s)
@@ -28,7 +29,6 @@ model Empresa {
   cnpj_cpf String  @unique
   nome     String
   email    String  @unique
-  password String
   telefone String? @unique
 
   // RELACIONAMENTO(s)
