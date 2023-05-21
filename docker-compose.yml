@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  honor:
+    image: bitnami/postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_USER=pablo
+      - POSTGRESQL_PASSWORD=!2107ph
+      - POSTGRESQL_DATABASE=honor
