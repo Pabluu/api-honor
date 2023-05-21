@@ -32,10 +32,10 @@ model Empresa {
   telefone String? @unique
 
   // RELACIONAMENTO(s)
-  endereco    Endereco    @relation(fields: [endereco_id], references: [id])
-  responsavel Responsavel @relation(fields: [responsavel_id], references: [id])
+  endereco    Endereco @relation(fields: [endereco_id], references: [id])
+  endereco_id String
 
-  endereco_id    String
+  responsavel    Responsavel @relation(fields: [responsavel_id], references: [id])
   responsavel_id String
 
   Usuario Usuario[]
@@ -72,8 +72,9 @@ model Recibo {
   data_pagamento   DateTime?
 
   // RELACIONAMENTO(s)
-  cliente        Cliente     @relation(fields: [cliente_id], references: [id])
-  cliente_id     String
+  cliente    Cliente @relation(fields: [cliente_id], references: [id])
+  cliente_id String
+
   responsavel    Responsavel @relation(fields: [responsavel_id], references: [id])
   responsavel_id String
 
