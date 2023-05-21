@@ -10,11 +10,98 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id String @id @default(uuid())
-  nome String
-  email String @unique
-  permissao String 
+model Usuario {
+  id        String @id @default(uuid())
+  nome      String
+  email     String @unique
+  permissao String
 
-  @@map("users")
+  // RELACIONAMENTO(s)
+  empresa    Empresa @relation(fields: [empresa_id], references: [id])
+  empresa_id String
+
+  @@map("USUARIO")
+}
+
+model Empresa {
+  id       String  @id @default(uuid())
+  cnpj_cpf String  @unique
+  nome     String
+  email    String  @unique
+  password String
+  telefone String? @unique
+
+  // RELACIONAMENTO(s)
+  endereco    Endereco    @relation(fields: [endereco_id], references: [id])
+  responsavel Responsavel @relation(fields: [responsavel_id], references: [id])
+
+  endereco_id    String
+  responsavel_id String
+
+  Usuario Usuario[]
+  Cliente Cliente[]
+
+  @@map("EMPRESA")
+}
+
+model Cliente {
+  id       String  @id @default(uuid())
+  nome     String
+  cnpj_cpf String? @unique
+  telefone String? @unique
+  ativo    Boolean @default(true)
+  tipo     String
+
+  // RELACIONAMENTO(s)
+  empresa    Empresa @relation(fields: [empresa_id], references: [id])
+  empresa_id String
+
+  endereco    Endereco @relation(fields: [endereco_id], references: [id])
+  endereco_id String
+
+  Recibo Recibo[]
+
+  @@map("CLIENTE")
+}
+
+model Recibo {
+  id               String    @id @default(uuid())
+  numero           Int       @default(autoincrement())
+  valor            Decimal   @default(0)
+  data_competencia DateTime  @default(now()) @db.Date
+  data_pagamento   DateTime?
+
+  // RELACIONAMENTO(s)
+  cliente        Cliente     @relation(fields: [cliente_id], references: [id])
+  cliente_id     String
+  responsavel    Responsavel @relation(fields: [responsavel_id], references: [id])
+  responsavel_id String
+
+  @@map("RECIBO")
+}
+
+model Endereco {
+  id     String @id @default(uuid())
+  cep    String @unique
+  estado String
+  cidade String
+  bairro String
+  rua    String
+  numero String
+
+  // RELACIONAMENTO(s)
+  Empresa Empresa[]
+  Cliente Cliente[]
+
+  @@map("ENDERECO")
+}
+
+model Responsavel {
+  id            String @id @default(uuid())
+  nome          String
+  identificador String @unique
+
+  // RELACIONAMENTO(s)
+  Empresa Empresa[]
+  Recibo  Recibo[]
 }

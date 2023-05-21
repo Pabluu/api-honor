@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "RECIBO" ALTER COLUMN "data_competencia" SET DATA TYPE DATE;
